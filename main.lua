@@ -1,5 +1,7 @@
 require("editor")
 require("cam")
+require("gui/toolkit")
+require("gui/fadingtext")
 
 function love.load()
     --love.graphics.setMode(768, 480, false, false, 0)
@@ -22,7 +24,10 @@ function love.load()
     tiles.pillar = Tile:new("pillar", editor.gfxPillar, { r=125, g=0, b=125 })
     tiles.door = Tile:new("door",   editor.gfxDoor,   { r=255, g=255, b=255 })
     tiles.back = Tile:new("back",   editor.bfxBack,   { r=0, g=0, b=0 })
-    print(tiles.door)
+
+    panel = Panel:new("test", 10, 10, 100, 80)
+    text = FadingText:new("ilk text denemesi", {255, 255, 255, 255}, 300, 300, 1, 400)
+    text:show()
 end
 
 function love.draw()
@@ -49,10 +54,15 @@ function love.draw()
     love.graphics.draw(editor.gfxBack, mapEndX+59, 109, 0, 3, 3)
     love.graphics.draw(editor.gfxDoor, mapEndX+9, 159, 0, 3, 3)
 
+    panel:draw()
+    text:draw()
 end
 
 function love.update(dt)
     cam:update(dt)
+    panel:update(dt)
+    text:update(dt)
+
     if love.keyboard.isDown("left") then
         char.x = char.x - 100*dt
     elseif love.keyboard.isDown("right") then
@@ -71,6 +81,7 @@ function between(a, min, max)
 end
 
 function love.mousepressed(x, y, button)
+    panel:mousepressed(x, y, button)
     if button == "l" then
         if between(x, mapEndX, mapEndX+50) then
             if between(y, 0, 50) then
@@ -102,9 +113,16 @@ function love.mousepressed(x, y, button)
     print(selectedTile)
 end
 
+function love.mousereleased(x, y, button)
+    panel:mousereleased(x, y, button)
+end
+
 function love.keypressed(key, unicode)
+    print("key pressed: ", unicode)
     if unicode == 20 then -- ctrl + t
         editor.overImgToggle = not editor.overImgToggle
+    elseif unicode == 18 then
+        text:show()
     end
 end
 
