@@ -26,10 +26,6 @@ end
 
 Editor = {}
 
-function Editor:saveBaseImgData(filePath)
-
-end
-
 function Editor:new(lvl)
     object = {}
 
@@ -61,6 +57,10 @@ function Editor:new(lvl)
     setmetatable(object, self)
     self.__index = self
     return object
+end
+
+function Editor:saveBaseImgData(filePath)
+    self.baseImg:encode(filePath, "png")
 end
 
 function Editor:draw(cam)
