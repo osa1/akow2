@@ -66,7 +66,6 @@ function TilePanel:draw()
                     self.posy+rowHeight*(y-1)+((rowHeight-24)/2),
                     0, 3, 3)
             end
-            print("self.title", self.title)
             love.graphics.setFont(font1)
             love.graphics.printf(self.title, self.posx+5, self.posy-15, 1000, "left")
         end

@@ -18,7 +18,8 @@ function love.load()
     
     char = { x=0, y=0 }
 
-    cam = Cam:new(300, 200, 768, 480)
+    --cam = Cam:new(300, 200, 768, 480)
+    cam = Cam:new(768, 480, 1440, 480)
     cam:lock(char)
 
     tiles.normal = Tile:new("normal", editor.gfxNormal, { r=255, g=0, b=0 })
@@ -45,9 +46,11 @@ function love.load()
 end
 
 function love.draw()
+    love.graphics.push()
+    love.graphics.translate(-cam.x, -cam.y)
     editor:draw(cam)
     cam:draw()
-    
+    love.graphics.pop()
     -- we have 7 different tiles
     -- and I need one more slot for eraser
     

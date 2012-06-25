@@ -7,10 +7,11 @@ function Editor:new(lvl)
 
     local level = lvl or 1
 
-    object.width = 32
+    object.width = 60
     object.height = 20
     object.scale = 3
-    object.baseImg = love.image.newImageData("levels/lvl"..level.."col.png")
+    --object.baseImg = love.image.newImageData("levels/lvl"..level.."col.png")
+    object.baseImg = love.image.newImageData("levels/lvl0bigcol.png")
     object.overImg = love.graphics.newImage("levels/lvl"..level.."over.png")
     object.overImg:setFilter("nearest", "nearest")
     object.overImgToggle = false
@@ -44,10 +45,10 @@ function Editor:draw(cam)
 
     love.graphics.setColor(255, 255, 255, 255)
     
-    startX = math.floor(cam.x/8/self.scale)
-    endX = math.floor((cam.x+cam.width)/8/self.scale)
-    startY = math.floor(cam.y/8/self.scale)
-    endY = math.floor((cam.y+cam.height)/8/self.scale)
+    local startX = math.floor(cam.x/8/self.scale)
+    local endX = math.floor((cam.x+cam.width)/8/self.scale)
+    local startY = math.floor(cam.y/8/self.scale)
+    local endY = math.floor((cam.y+cam.height)/8/self.scale)
 
     for x=startX, endX do
         for y=startY, endY do
