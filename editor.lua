@@ -74,32 +74,5 @@ function Editor:draw(cam)
         end
     end
 
-
-
-    --[[for x = 0, self.width-1 do
-        for y = 0, self.height-1 do
-            red, green, blue, alpha = self.baseImg:getPixel(x, y)
-            if red == 255 and green == 0 and blue == 0 then
-                love.graphics.draw(self.gfxNormal, x*8*self.scale, y*8*self.scale, 0, 3, 3)
-            elseif red == 0 and green == 255 and blue == 0 then
-                love.graphics.draw(self.gfxTop, x*8*self.scale, y*8*self.scale, 0, 3, 3)
-            elseif red == 255 and green == 255 and blue == 0 then
-                love.graphics.draw(self.gfxUnder, x*8*self.scale, y*8*self.scale, 0, 3, 3)
-            elseif red == 0 and green == 255 and blue == 255 then
-                love.graphics.draw(self.gfxStrand, x*8*self.scale, y*8*self.scale, 0, 3, 3)
-            elseif red > 120 and red < 135 and green == 0 and blue > 120 and blue < 135 then
-                love.graphics.draw(self.gfxPillar, x*8*self.scale, y*8*self.scale, 0, 3, 3)
-            elseif red == 255 and green == 255 and blue == 255 then
-                love.graphics.draw(self.gfxDoor, x*8*self.scale, y*8*self.scale, 0, 3, 3)
-            else
-                love.graphics.draw(self.gfxBack, x*8*self.scale, y*8*self.scale, 0, 3, 3)
-            end
-        end
-    end]]
-
-    --if self.overImg ~= false and self.overImgToggle == true then
-        --love.graphics.draw(self.overImg, 1, 1, 0, 3, 3)
-    --end
-
     love.graphics.setColor(r, g, b, a)
 end
