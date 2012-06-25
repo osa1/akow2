@@ -38,7 +38,7 @@ function love.load()
     table.insert(tiles, tiles.door)
     table.insert(tiles, tiles.back) -- 7
 
-    panel = gui.newPanel("test", 10, 10, 100, 80)
+    --panel = gui.newPanel("test", 10, 10, 100, 80)
     tilePanel = gui.newTilePanel(50, 50)
     text = gui.newFadingText("ilk text denemesi", {255, 255, 255, 255}, 300, 300, 1, 400)
     text:show()
@@ -76,9 +76,6 @@ function love.draw()
     if editor.overImg ~= false and editor.overImgToggle == true then
         love.graphics.draw(editor.overImg, 1, 1, 0, 3, 3)
     end
-
-    --panel:draw()
-    --text:draw()
 end
 
 function love.update(dt)
@@ -87,9 +84,6 @@ function love.update(dt)
     for i,v in ipairs(activeGUIs) do
         v:update(dt)
     end
-
-    --panel:update(dt)
-    --text:update(dt)
     if love.keyboard.isDown("left") then
         char.x = char.x - 500*dt
     elseif love.keyboard.isDown("right") then
@@ -108,7 +102,7 @@ function between(a, min, max)
 end
 
 function love.mousepressed(x, y, button)
-    panel:mousepressed(x, y, button)
+    --panel:mousepressed(x, y, button)
     tilePanel:mousepressed(x, y, button)
     if button == "l" then
         if between(x, mapEndX, mapEndX+50) then
@@ -142,7 +136,7 @@ function love.mousepressed(x, y, button)
 end
 
 function love.mousereleased(x, y, button)
-    panel:mousereleased(x, y, button)
+    --panel:mousereleased(x, y, button)
     tilePanel:mousereleased(x, y, button)
 end
 
