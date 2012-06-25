@@ -1,28 +1,4 @@
-Tile = {}
-tiles = {}
-
-function Tile:new(name, image, imageDataColor)
-    object = {}
-    object.name = name
-    object.image = image
-    object.imageDataColor = imageDataColor
-
-    setmetatable(object, self)
-    self.__index = self
-
-    --table.insert(tiles, object)
-    tiles.name = object
-    return object
-end
-
-function Tile:drawToImageData(imageData, x, y)
-    imageData:setPixel(x, y, self.imageDataColor.r, self.imageDataColor.g, self.imageDataColor.b, 0)
-end
-
-function Tile:draw(x, y, scale)
-    love.graphics.draw(self.image, x*8*scale, y*8*scale, 0, 3, 3)
-end
-
+require("tile")
 
 Editor = {}
 
@@ -121,9 +97,9 @@ function Editor:draw(cam)
         end
     end]]
 
-    if self.overImg ~= false and self.overImgToggle == true then
-        love.graphics.draw(self.overImg, 1, 1, 0, 3, 3)
-    end
+    --if self.overImg ~= false and self.overImgToggle == true then
+        --love.graphics.draw(self.overImg, 1, 1, 0, 3, 3)
+    --end
 
     love.graphics.setColor(r, g, b, a)
 end

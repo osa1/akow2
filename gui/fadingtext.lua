@@ -1,10 +1,11 @@
 FadingText = {}
+FadingText.__index = FadingText
 
-function FadingText:new(text, color, centerx, centery, delay, speed)
+function FadingText:new(text, color, posx, posy, delay, speed)
     object = {}
     object.text = text
-    object.centerx = centerx
-    object.centery = centery
+    object.posx = posx
+    object.posy = posy
     object.color = color
     object.speed = speed or 100
     object.delay = delay
@@ -13,7 +14,7 @@ function FadingText:new(text, color, centerx, centery, delay, speed)
     object.active = false
 
     setmetatable(object, self)
-    self.__index = self
+    --self.__index = self
 
     return object
 end
@@ -46,8 +47,8 @@ function FadingText:draw()
         local r, g, b, a
         r, g, b, a = love.graphics.getColor()
         love.graphics.setColor(self.color)
-        love.graphics.printf(self.text, self.centerx, self.centery, 1000, "center")
+        love.graphics.setFont(font1)
+        love.graphics.printf(self.text, self.posx, self.posy, 1000, "center")
         love.graphics.setColor(r, g, b, a)
     end
-    
 end

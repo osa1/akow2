@@ -1,4 +1,5 @@
 Panel = {}
+Panel.__index = Panel
 
 function Panel:new(title, posx, posy, width, height)
     object = {}
@@ -13,7 +14,7 @@ function Panel:new(title, posx, posy, width, height)
     object.yoffset = 0
 
     setmetatable(object, self)
-    self.__index = self
+    --self.__index = self
 
     return object
 end
