@@ -7,12 +7,14 @@ function Editor:new(lvl)
 
     local level = lvl or 1
 
-    object.width = 60
-    object.height = 20
     object.scale = 3
     --object.baseImg = love.image.newImageData("levels/lvl"..level.."col.png")
     object.baseImg = love.image.newImageData("levels/lvl0bigcol.png")
     object.overImg = love.graphics.newImage("levels/lvl"..level.."over.png")
+
+    object.width = object.baseImg:getWidth()
+    object.height = object.baseImg:getHeight()
+
     object.overImg:setFilter("nearest", "nearest")
     object.overImgToggle = false
 
