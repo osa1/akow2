@@ -2,8 +2,23 @@ Tile = {}
 tiles = {}
 selectedTile = nil
 
+Tile.gfxNormal = love.graphics.newImage("levels/nullbox.png")
+Tile.gfxNormal:setFilter("nearest", "nearest")
+Tile.gfxTop = love.graphics.newImage("levels/grassbox.png")
+Tile.gfxTop:setFilter("nearest", "nearest")
+Tile.gfxUnder = love.graphics.newImage("levels/underbox.png")
+Tile.gfxUnder:setFilter("nearest", "nearest")
+Tile.gfxStrand = love.graphics.newImage("levels/strandbox.png")
+Tile.gfxStrand:setFilter("nearest", "nearest")
+Tile.gfxPillar = love.graphics.newImage("levels/pillarbox.png")
+Tile.gfxPillar:setFilter("nearest", "nearest")
+Tile.gfxBack = love.graphics.newImage("levels/backbox.png")
+Tile.gfxBack:setFilter("nearest", "nearest")
+Tile.gfxDoor = love.graphics.newImage("levels/doorbox.png")
+Tile.gfxDoor:setFilter("nearest", "nearest")
+
 function Tile:new(name, image, imageDataColor)
-    object = {}
+    local object = {}
     object.name = name
     object.image = image
     object.imageDataColor = imageDataColor

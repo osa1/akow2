@@ -2,31 +2,33 @@ require("editor")
 require("cam")
 --require("gui/toolkit")
 --require("gui/fadingtext")
-require("gui/package")
 
 function love.load()
     love.graphics.setMode(768, 480, false, false, 0)
     mapEndX = 768
     mapEndY = 480
 
+
+    -- gamestate = [editor, game, main, menu]
+    gameState = "editor"
     editor = Editor:new()
 
     font1 = love.graphics.newFont("fonts/pf_tempesta_seven_extended.ttf", 12)
     fontSmall = love.graphics.newFont("fonts/pf_tempesta_seven_extended.ttf", 9)
-    
+
     --char = { x=0, y=0 }
 
     --cam = Cam:new(300, 200, 768, 480)
     cam = Cam:new(768, 480, 1440, 480)
     --cam:lock(char)
 
-    tiles.normal = Tile:new("normal", editor.gfxNormal, { r=255, g=0, b=0 })
-    tiles.top = Tile:new("top",    editor.gfxTop,    { r=0, g=255, b=0 })
-    tiles.under = Tile:new("under",  editor.gfxUnder,  { r=255, g=0, b=0 })
-    tiles.strand = Tile:new("strand", editor.gfxStrand, { r=0, g=255, b=255 })
-    tiles.pillar = Tile:new("pillar", editor.gfxPillar, { r=125, g=0, b=125 })
-    tiles.door = Tile:new("door",   editor.gfxDoor,   { r=255, g=255, b=255 })
-    tiles.back = Tile:new("back",   editor.gfxBack,   { r=0, g=0, b=0 })
+    tiles.normal = Tile:new("normal", Tile.gfxNormal, { r=255, g=0, b=0 })
+    tiles.top = Tile:new("top",    Tile.gfxTop,    { r=0, g=255, b=0 })
+    tiles.under = Tile:new("under",  Tile.gfxUnder,  { r=255, g=0, b=0 })
+    tiles.strand = Tile:new("strand", Tile.gfxStrand, { r=0, g=255, b=255 })
+    tiles.pillar = Tile:new("pillar", Tile.gfxPillar, { r=125, g=0, b=125 })
+    tiles.door = Tile:new("door", Tile.gfxDoor,   { r=255, g=255, b=255 })
+    tiles.back = Tile:new("back", Tile.gfxBack,   { r=0, g=0, b=0 })
 
     -- TODO: I couldn't find any better way
     table.insert(tiles, tiles.normal)
@@ -37,33 +39,18 @@ function love.load()
     table.insert(tiles, tiles.door)
     table.insert(tiles, tiles.back) -- 7
 
-    tilePanel = gui.newTilePanel(50, 50)
-    text = gui.newFadingText("ilk text denemesi", {255, 255, 255, 255}, 300, 300, 1, 400)
-    text:show()
+    -- tilePanel = gui.newTilePanel(50, 50)
+    -- text = gui.newFadingText("ilk text denemesi", {255, 255, 255, 255}, 300, 300, 1, 400)
+    -- text:show()
 end
 
 function love.draw()
-    love.graphics.push()
-    love.graphics.translate(-cam.x, -cam.y)
-    editor:draw(cam)
-    cam:draw()
-    love.graphics.pop()
-
-    for i,v in ipairs(activeGUIs) do
-        v:draw()
-    end
-
-    if editor.overImg ~= false and editor.overImgToggle == true then
-        love.graphics.draw(editor.overImg, 1, 1, 0, 3, 3)
-    end
+    editor:draw()
 end
 
 function love.update(dt)
     cam:update(dt)
 
-    for i,v in ipairs(activeGUIs) do
-        v:update(dt)
-    end
     if love.keyboard.isDown("left") then
         --char.x = char.x - 500*dt
         cam.x = cam.x - 500*dt
@@ -79,6 +66,8 @@ function love.update(dt)
         --char.y = char.y + 500*dt
         cam.y = cam.y + 500*dt
     end
+
+    editor:update(dt)
 end
 
 function between(a, min, max)
@@ -86,23 +75,18 @@ function between(a, min, max)
 end
 
 function love.mousepressed(x, y, button)
-    if not tilePanel:mousepressed(x, y, button) then
-        -- user didn't click on panel, then send signal to editor
-        editor:mousepressed(x, y, button)
-    end
-    print("selected tile", selectedTile)
+    editor:mousepressed(x, y, button)
 end
 
 function love.mousereleased(x, y, button)
     editor:mousereleased(x, y, button)
-    tilePanel:mousereleased(x, y, button)
 end
 
 function love.keypressed(key, unicode)
     print("key pressed: ", unicode)
     if unicode == 20 then -- ctrl + t
-        editor.overImgToggle = not editor.overImgToggle
+        editor.world.overImgToggle = not editor.world.overImgToggle
     elseif unicode == 18 then -- ctrl + r
-        text:show()
+        -- text:show()
     end
 end

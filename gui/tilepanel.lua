@@ -4,7 +4,7 @@ TilePanel = {}
 TilePanel.__index = TilePanel
 
 function TilePanel:new(posx, posy)
-    object = {}
+    local object = {}
     object.panelTitle = "Blocks"
     object.title = object.panelTitle
     object.posx = posx
@@ -18,7 +18,6 @@ function TilePanel:new(posx, posy)
 
     object.cols = 3
     object.rows = 3
-    object.tiles = {}
 
     setmetatable(object, self)
 
@@ -80,10 +79,10 @@ function TilePanel:draw()
 end
 
 function TilePanel:mousepressed(x, y, button)
-    local xoffset = x - self.posx
-    local yoffset = y - self.posy
     if button == "l" and x >= self.posx and x <= self.posx+self.width and
             y >= self.posy and y <= self.posy+self.height then
+        local xoffset = x - self.posx
+        local yoffset = y - self.posy
         self.drag = true
         self.xoffset = xoffset
         self.yoffset = yoffset
@@ -95,7 +94,9 @@ function TilePanel:mousepressed(x, y, button)
             print("tile selected", tiles[self.cols*(row-1)+col].name)
             selectedTile = tiles[self.cols*(row-1)+col]
         end
+        return true -- this means that user clicked on the panel
     end
+    return false -- user didn't click on panel
 end
 
 function TilePanel:mousereleased(x, y, button)
