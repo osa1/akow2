@@ -15,11 +15,11 @@ function love.load()
     font1 = love.graphics.newFont("fonts/pf_tempesta_seven_extended.ttf", 12)
     fontSmall = love.graphics.newFont("fonts/pf_tempesta_seven_extended.ttf", 9)
     
-    char = { x=0, y=0 }
+    --char = { x=0, y=0 }
 
     --cam = Cam:new(300, 200, 768, 480)
     cam = Cam:new(768, 480, 1440, 480)
-    cam:lock(char)
+    --cam:lock(char)
 
     tiles.normal = Tile:new("normal", editor.gfxNormal, { r=255, g=0, b=0 })
     tiles.top = Tile:new("top",    editor.gfxTop,    { r=0, g=255, b=0 })
@@ -72,15 +72,19 @@ function love.update(dt)
         v:update(dt)
     end
     if love.keyboard.isDown("left") then
-        char.x = char.x - 500*dt
+        --char.x = char.x - 500*dt
+        cam.x = cam.x - 500*dt
     elseif love.keyboard.isDown("right") then
-        char.x = char.x + 500*dt
+        --char.x = char.x + 500*dt
+        cam.x = cam.x + 500*dt
     end
 
     if love.keyboard.isDown("up") then
-        char.y = char.y - 500*dt
+        --char.y = char.y - 500*dt
+        cam.y = cam.y - 500*dt
     elseif love.keyboard.isDown("down") then
-        char.y = char.y + 500*dt
+        --char.y = char.y + 500*dt
+        cam.y = cam.y + 500*dt
     end
 end
 

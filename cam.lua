@@ -6,7 +6,7 @@ function Cam:new(width, height, mapWidth, mapHeight)
     object.height = height
     object.mapWidth = mapWidth
     object.mapHeight = mapHeight
-    object.lock = nil
+    object.lockedId = nil
     -- top left corner
     object.x = 0
     object.y = 0
@@ -19,11 +19,11 @@ end
 
 
 function Cam:lock(entity)
-    self.lock = entity
+    self.lockedId = entity
 end
 
 function Cam:update(dt)
-    if self.lock then
+    if self.lockedId then
         if self.lock.x + self.width/2 > self.mapWidth then
             self.x = self.mapWidth - self.width
         elseif self.lock.x - self.width/2 < 0 then
