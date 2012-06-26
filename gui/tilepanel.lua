@@ -20,7 +20,6 @@ function TilePanel:new(posx, posy)
     object.rows = 3
 
     setmetatable(object, self)
-
     return object
 end
 

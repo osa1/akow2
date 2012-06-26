@@ -26,7 +26,7 @@ function Tile:new(name, image, imageDataColor)
     setmetatable(object, self)
     self.__index = self
 
-    --table.insert(tiles, object)
+    table.insert(tiles, object)
     tiles.name = object
     return object
 end

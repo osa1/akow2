@@ -1,7 +1,5 @@
 require("editor")
 require("cam")
---require("gui/toolkit")
---require("gui/fadingtext")
 
 function love.load()
     love.graphics.setMode(768, 480, false, false, 0)
@@ -22,13 +20,13 @@ function love.load()
     cam = Cam:new(768, 480, 1440, 480)
     --cam:lock(char)
 
-    tiles.normal = Tile:new("normal", Tile.gfxNormal, { r=255, g=0, b=0 })
-    tiles.top = Tile:new("top",    Tile.gfxTop,    { r=0, g=255, b=0 })
-    tiles.under = Tile:new("under",  Tile.gfxUnder,  { r=255, g=0, b=0 })
-    tiles.strand = Tile:new("strand", Tile.gfxStrand, { r=0, g=255, b=255 })
-    tiles.pillar = Tile:new("pillar", Tile.gfxPillar, { r=125, g=0, b=125 })
-    tiles.door = Tile:new("door", Tile.gfxDoor,   { r=255, g=255, b=255 })
-    tiles.back = Tile:new("back", Tile.gfxBack,   { r=0, g=0, b=0 })
+    Tile:new("normal", Tile.gfxNormal, { r=255, g=0, b=0 })
+    Tile:new("top",    Tile.gfxTop,    { r=0, g=255, b=0 })
+    Tile:new("under",  Tile.gfxUnder,  { r=255, g=0, b=0 })
+    Tile:new("strand", Tile.gfxStrand, { r=0, g=255, b=255 })
+    Tile:new("pillar", Tile.gfxPillar, { r=125, g=0, b=125 })
+    Tile:new("door",   Tile.gfxDoor,   { r=255, g=255, b=255 })
+    Tile:new("back",   Tile.gfxBack,   { r=0, g=0, b=0 })
 
     -- TODO: I couldn't find any better way
     table.insert(tiles, tiles.normal)
@@ -38,10 +36,6 @@ function love.load()
     table.insert(tiles, tiles.pillar)
     table.insert(tiles, tiles.door)
     table.insert(tiles, tiles.back) -- 7
-
-    -- tilePanel = gui.newTilePanel(50, 50)
-    -- text = gui.newFadingText("ilk text denemesi", {255, 255, 255, 255}, 300, 300, 1, 400)
-    -- text:show()
 end
 
 function love.draw()
