@@ -10,7 +10,7 @@ function TilePanel:new(posx, posy)
     object.posx = posx
     object.posy = posy
     object.width = 100
-    object.height = 400
+    object.height = 150
 
     object.drag = false
     object.xoffset = 0
@@ -43,6 +43,13 @@ function TilePanel:draw()
     local rowHeight = self.height/self.rows
     local mouseX = love.mouse.getX()
     local mouseY = love.mouse.getY()
+
+    --self.title = if selectedTile then selectedTile.name else self.panelTitle end
+    if selectedTile then
+        self.title = selectedTile.name
+    else
+        self.title = self.panelTitle
+    end
     for x=1,self.cols do
         for y=1,self.rows do
             if between(mouseX, self.posx+colWidth*(x-1), self.posx+colWidth*x) and
@@ -66,18 +73,28 @@ function TilePanel:draw()
                     self.posy+rowHeight*(y-1)+((rowHeight-24)/2),
                     0, 3, 3)
             end
-            love.graphics.setFont(font1)
-            love.graphics.printf(self.title, self.posx+5, self.posy-15, 1000, "left")
         end
     end
+            love.graphics.setFont(font1)
+            love.graphics.printf(self.title, self.posx+5, self.posy-18, 1000, "left")
 end
 
 function TilePanel:mousepressed(x, y, button)
+    local xoffset = x - self.posx
+    local yoffset = y - self.posy
     if button == "l" and x >= self.posx and x <= self.posx+self.width and
             y >= self.posy and y <= self.posy+self.height then
         self.drag = true
-        self.xoffset = x-self.posx
-        self.yoffset = y-self.posy
+        self.xoffset = xoffset
+        self.yoffset = yoffset
+
+        local col = math.floor(xoffset / (self.width / self.cols)) + 1
+        local row = math.floor(yoffset / (self.height / self.rows)) + 1
+        print("col", col, "row", row)
+        if tiles[self.cols*(row-1)+col] then
+            print("tile selected", tiles[self.cols*(row-1)+col].name)
+            selectedTile = tiles[self.cols*(row-1)+col]
+        end
     end
 end
 
