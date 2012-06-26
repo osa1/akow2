@@ -5,7 +5,6 @@ require("cam")
 require("gui/package")
 
 function love.load()
-    --love.graphics.setMode(768, 480, false, false, 0)
     love.graphics.setMode(768, 480, false, false, 0)
     mapEndX = 768
     mapEndY = 480
@@ -38,7 +37,6 @@ function love.load()
     table.insert(tiles, tiles.door)
     table.insert(tiles, tiles.back) -- 7
 
-    --panel = gui.newPanel("test", 10, 10, 100, 80)
     tilePanel = gui.newTilePanel(50, 50)
     text = gui.newFadingText("ilk text denemesi", {255, 255, 255, 255}, 300, 300, 1, 400)
     text:show()
@@ -50,11 +48,6 @@ function love.draw()
     editor:draw(cam)
     cam:draw()
     love.graphics.pop()
-    -- we have 7 different tiles
-    -- and I need one more slot for eraser
-    
-    -- 100 x 480
-    -- 24 x 24
 
     for i,v in ipairs(activeGUIs) do
         v:draw()
@@ -93,13 +86,15 @@ function between(a, min, max)
 end
 
 function love.mousepressed(x, y, button)
-    --panel:mousepressed(x, y, button)
-    tilePanel:mousepressed(x, y, button)
+    if not tilePanel:mousepressed(x, y, button) then
+        -- user didn't click on panel, then send signal to editor
+        editor:mousepressed(x, y, button)
+    end
     print("selected tile", selectedTile)
 end
 
 function love.mousereleased(x, y, button)
-    --panel:mousereleased(x, y, button)
+    editor:mousereleased(x, y, button)
     tilePanel:mousereleased(x, y, button)
 end
 

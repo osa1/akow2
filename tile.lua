@@ -1,5 +1,6 @@
 Tile = {}
 tiles = {}
+selectedTile = nil
 
 function Tile:new(name, image, imageDataColor)
     object = {}

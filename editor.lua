@@ -42,7 +42,7 @@ function Editor:saveBaseImgData(filePath)
     self.baseImg:encode(filePath, "png")
 end
 
-function Editor:draw(cam)
+function Editor:draw()
     r, g, b, a = love.graphics.getColor()
 
     love.graphics.setColor(255, 255, 255, 255)
@@ -78,4 +78,19 @@ function Editor:draw(cam)
     end
 
     love.graphics.setColor(r, g, b, a)
+end
+
+function Editor:mousepressed(x, y, button)
+    if selectedTile then
+        local imgx = math.floor((cam.x+x)/(self.scale*8))
+        local imgy = math.floor((cam.y+y)/(self.scale*8))
+        print("imgx", imgx, "imgy", imgy)
+        local color = selectedTile.imageDataColor
+
+        self.baseImg:setPixel(imgx, imgy, color.r, color.g, color.b, 0)
+    end
+end
+
+function Editor:mousereleased(x, y, button)
+
 end
