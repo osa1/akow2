@@ -1,4 +1,3 @@
-require("world")
 require("gui/tilepanel")
 
 Editor = {}

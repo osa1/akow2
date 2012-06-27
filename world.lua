@@ -1,5 +1,3 @@
-require("swarm")
-
 World = {}
 
 function World:new(lvl)
@@ -20,21 +18,6 @@ function World:new(lvl)
     object.doorXPos = love.graphics.getWidth()/2
     object.doorYPos = love.graphics.getHeight()/2
 
-    object.gfxNormal = love.graphics.newImage("levels/nullbox.png")
-    object.gfxNormal:setFilter("nearest", "nearest")
-    object.gfxTop = love.graphics.newImage("levels/grassbox.png")
-    object.gfxTop:setFilter("nearest", "nearest")
-    object.gfxUnder = love.graphics.newImage("levels/underbox.png")
-    object.gfxUnder:setFilter("nearest", "nearest")
-    object.gfxStrand = love.graphics.newImage("levels/strandbox.png")
-    object.gfxStrand:setFilter("nearest", "nearest")
-    object.gfxPillar = love.graphics.newImage("levels/pillarbox.png")
-    object.gfxPillar:setFilter("nearest", "nearest")
-    object.gfxBack = love.graphics.newImage("levels/backbox.png")
-    object.gfxBack:setFilter("nearest", "nearest")
-    object.gfxDoor = love.graphics.newImage("levels/doorbox.png")
-    object.gfxDoor:setFilter("nearest", "nearest")
-
     setmetatable(object, self)
     self.__index = self
     return object
@@ -53,23 +36,23 @@ function World:draw()
     for x=startX, endX do
         for y=startY, endY do
             if x < 0 or x >= self.width or y < 0 or y >= self.height then
-                love.graphics.draw(self.gfxBack, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
+                love.graphics.draw(Tile.gfxBack, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
             else
                 red, green, blue, alpha = self.baseImg:getPixel(x, y)
                 if red == 255 and green == 0 and blue == 0 then
-                    love.graphics.draw(self.gfxNormal, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxNormal, x*8*self.scale, y*8*self.scale, 0, 3, 3)
                 elseif red == 0 and green == 255 and blue == 0 then
-                    love.graphics.draw(self.gfxTop, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxTop, x*8*self.scale, y*8*self.scale, 0, 3, 3)
                 elseif red == 255 and green == 255 and blue == 0 then
-                    love.graphics.draw(self.gfxUnder, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxUnder, x*8*self.scale, y*8*self.scale, 0, 3, 3)
                 elseif red == 0 and green == 255 and blue == 255 then
-                    love.graphics.draw(self.gfxStrand, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxStrand, x*8*self.scale, y*8*self.scale, 0, 3, 3)
                 elseif red > 120 and red < 135 and green == 0 and blue > 120 and blue < 135 then
-                    love.graphics.draw(self.gfxPillar, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxPillar, x*8*self.scale, y*8*self.scale, 0, 3, 3)
                 elseif red == 255 and green == 255 and blue == 255 then
-                    love.graphics.draw(self.gfxDoor, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxDoor, x*8*self.scale, y*8*self.scale, 0, 3, 3)
                 else
-                    love.graphics.draw(self.gfxBack, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxBack, x*8*self.scale, y*8*self.scale, 0, 3, 3)
                 end
             end
         end

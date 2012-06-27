@@ -1,5 +1,6 @@
 require("editor")
 require("cam")
+require("world")
 
 function love.load()
     love.graphics.setMode(768, 480, false, false, 0)
