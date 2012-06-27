@@ -88,9 +88,9 @@ function TilePanel:mousepressed(x, y, button)
 
         local col = math.floor(xoffset / (self.width / self.cols)) + 1
         local row = math.floor(yoffset / (self.height / self.rows)) + 1
-        print("col", col, "row", row)
+        -- print("col", col, "row", row)
         if tiles[self.cols*(row-1)+col] then
-            print("tile selected", tiles[self.cols*(row-1)+col].name)
+            -- print("tile selected", tiles[self.cols*(row-1)+col].name)
             selectedTile = tiles[self.cols*(row-1)+col]
         end
         return true -- this means that user clicked on the panel

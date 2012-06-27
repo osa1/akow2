@@ -1,12 +1,12 @@
 require("editor")
 require("cam")
 require("world")
+require("actor")
 
 function love.load()
     love.graphics.setMode(768, 480, false, false, 0)
     mapEndX = 768
     mapEndY = 480
-
 
     -- gamestate = [editor, game, main, menu]
     gameState = "editor"
@@ -14,6 +14,8 @@ function love.load()
 
     font1 = love.graphics.newFont("fonts/pf_tempesta_seven_extended.ttf", 12)
     fontSmall = love.graphics.newFont("fonts/pf_tempesta_seven_extended.ttf", 9)
+    player = Actor:new(0, 0)
+    editor.world:positionPlayer()
 
     --char = { x=0, y=0 }
 
@@ -28,6 +30,7 @@ function love.load()
     Tile:new("pillar", Tile.gfxPillar, { r=125, g=0, b=125 })
     Tile:new("door",   Tile.gfxDoor,   { r=255, g=255, b=255 })
     Tile:new("back",   Tile.gfxBack,   { r=0, g=0, b=0 })
+    Tile:new("player", Tile.player,    { r=255, g = 0, b=255 })
 
     -- TODO: I couldn't find any better way
     table.insert(tiles, tiles.normal)
@@ -37,32 +40,44 @@ function love.load()
     table.insert(tiles, tiles.pillar)
     table.insert(tiles, tiles.door)
     table.insert(tiles, tiles.back) -- 7
+    table.insert(tiles, tiles.player)
 end
 
 function love.draw()
-    editor:draw()
+    if gameState == "editor" then
+        editor:draw()
+    elseif gameState == "game" then
+        editor.world:draw()
+        player:draw()
+    end
 end
 
 function love.update(dt)
-    cam:update(dt)
+    if gameState == "editor" then
+        cam:update(dt)
 
-    if love.keyboard.isDown("left") then
-        --char.x = char.x - 500*dt
-        cam.x = cam.x - 500*dt
-    elseif love.keyboard.isDown("right") then
-        --char.x = char.x + 500*dt
-        cam.x = cam.x + 500*dt
+        if love.keyboard.isDown("left") then
+            --char.x = char.x - 500*dt
+            cam.x = cam.x - 500*dt
+        elseif love.keyboard.isDown("right") then
+            --char.x = char.x + 500*dt
+            cam.x = cam.x + 500*dt
+        end
+
+        if love.keyboard.isDown("up") then
+            --char.y = char.y - 500*dt
+            cam.y = cam.y - 500*dt
+        elseif love.keyboard.isDown("down") then
+            --char.y = char.y + 500*dt
+            cam.y = cam.y + 500*dt
+        end
+
+        editor:update(dt)
+    elseif gameState == "game" then
+        cam:lock(player)
+        cam:update(dt)
+        player:update(dt)
     end
-
-    if love.keyboard.isDown("up") then
-        --char.y = char.y - 500*dt
-        cam.y = cam.y - 500*dt
-    elseif love.keyboard.isDown("down") then
-        --char.y = char.y + 500*dt
-        cam.y = cam.y + 500*dt
-    end
-
-    editor:update(dt)
 end
 
 function between(a, min, max)
@@ -81,7 +96,14 @@ function love.keypressed(key, unicode)
     print("key pressed: ", unicode)
     if unicode == 20 then -- ctrl + t
         editor.world.overImgToggle = not editor.world.overImgToggle
-    elseif unicode == 18 then -- ctrl + r
+    -- elseif unicode == 18 then -- ctrl + r
         -- text:show()
+
+    elseif unicode == 5 then -- ctrl + e
+        if gameState == "editor" then
+            gameState = "game"
+        elseif gameState == "game" then
+            gameState = "editor"
+        end
     end
 end

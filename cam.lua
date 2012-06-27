@@ -24,23 +24,22 @@ end
 
 function Cam:update(dt)
     if self.lockedId then
-        if self.lock.x + self.width/2 > self.mapWidth then
+        if self.lockedId.xPos + self.width/2 > self.mapWidth then
             self.x = self.mapWidth - self.width
-        elseif self.lock.x - self.width/2 < 0 then
+        elseif self.lockedId.xPos - self.width/2 < 0 then
             self.x = 0
         else
-            self.x = self.lock.x - self.width/2
+            self.x = self.lockedId.xPos - self.width/2
         end
 
-        if self.lock.y + self.height/2 > self.mapHeight then
+        if self.lockedId.yPos + self.height/2 > self.mapHeight then
             self.y = self.mapHeight - self.height
-        elseif self.lock.y - self.height/2 < 0 then
+        elseif self.lockedId.yPos - self.height/2 < 0 then
             self.y = 0
         else
-            self.y = self.lock.y - self.height/2
+            self.y = self.lockedId.yPos - self.height/2
         end
     end
-    --print("cam.x", self.x, "cam.y", self.y)
 end
 
 function Cam:draw()

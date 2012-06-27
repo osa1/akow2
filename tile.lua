@@ -18,7 +18,7 @@ Tile.gfxDoor = love.graphics.newImage("levels/doorbox.png")
 Tile.gfxDoor:setFilter("nearest", "nearest")
 
 Tile.player = love.image.newImageData(8, 8)
-love.image.newImageData("gfx/player.png"):paste(Tile.player, 0, 0, 0, 0, 8, 8)
+Tile.player:paste(love.image.newImageData("gfx/player.png"), 0, 0, 0, 0, 48, 8)
 Tile.player = love.graphics.newImage(Tile.player)
 Tile.player:setFilter("nearest", "nearest")
 

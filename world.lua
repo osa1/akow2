@@ -24,9 +24,9 @@ function World:new(lvl)
 end
 
 function World:draw()
-    local r, g, b, a = love.graphics.getColor()
+    -- local r, g, b, a = love.graphics.getColor()
 
-    love.graphics.setColor(255, 255, 255, 255)
+    -- love.graphics.setColor(255, 255, 255, 255)
 
     local startX = math.floor(cam.x/8/self.scale)
     local endX = math.floor((cam.x+cam.width)/8/self.scale)
@@ -51,6 +51,12 @@ function World:draw()
                     love.graphics.draw(Tile.gfxPillar, x*8*self.scale, y*8*self.scale, 0, 3, 3)
                 elseif red == 255 and green == 255 and blue == 255 then
                     love.graphics.draw(Tile.gfxDoor, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                elseif red == 255 and green == 0 and blue == 255 then
+                    if gameState == "editor" then
+                        love.graphics.draw(Tile.player, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    else
+                        love.graphics.draw(Tile.gfxBack, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    end
                 else
                     love.graphics.draw(Tile.gfxBack, x*8*self.scale, y*8*self.scale, 0, 3, 3)
                 end
@@ -63,7 +69,7 @@ function World:draw()
         love.graphics.draw(self.overImg, 1, 1, 0, 3, 3)
     end
 
-    love.graphics.setColor(r, g, b, a)
+    -- love.graphics.setColor(r, g, b, a)
 end
 
 function World:update(dt)
