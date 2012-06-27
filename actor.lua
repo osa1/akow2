@@ -38,48 +38,32 @@ function Actor:new(x, y)
 end
 
 function Actor:draw()
+    love.graphics.push()
+    love.graphics.translate(-cam.x, -cam.y)
+
+    -- print("actor x", self.xPos, "actor y", self.yPos)
+    -- print("cam center x", cam.x + cam.width/2, "cam center y", cam.y + cam.height/2)
+
     local r, g, b, a = love.graphics.getColor()
-
-    -- local spriteSize = self.sprite:getHeight()
-    -- local spriteNum = math.floor(self.sprite:getWidth()/spriteSize)
-    -- love.graphics.setColor(255, 255 ,255, 255)
-    -- love.graphics.setScissor(self.xPos-12, self.yPos-12, spriteSize*3, spriteSize*3)
-    -- if self.dir == "l" then
-    --     love.graphics.draw(self.sprite, math.floor(self.xPos)+12+(math.floor(self.fps*love.timer.getTime()%spriteNum)*24), math.floor(self.yPos)-12, 0, -3, 3)
-    -- elseif self.dir == "r" then
-    --     love.graphics.draw(self.sprite, math.floor(self.xPos)-12-(math.floor(self.fps*love.timer.getTime()%spriteNum)*24), math.floor(self.yPos)-12, 0, 3, 3)
-    -- end
-    -- print("x pos", math.floor(self.xPos)+12+(math.floor(self.fps*love.timer.getTime()%spriteNum)*24))
-
-    local camX = math.floor(cam.x/8/world.scale)
-    local camY = math.floor(cam.y/8/world.scale)
 
     if self.dir == "l" then
         love.graphics.drawq(self.sprite,
             self.quads[math.floor(self.fps*love.timer.getTime()%#self.quads)+1],
-            self.xPos-camX+12,
-            self.yPos-camY-12,
+            self.xPos+12,
+            self.yPos-12,
             0,
             -world.scale,
             world.scale)
-        -- love.graphics.draw(self.sprite,
-        --     math.floor(self.xPos-camX)+12+(math.floor(self.fps*love.timer.getTime()%spriteNum)*24),
-        --     math.floor(self.yPos)-12, 0, -3, 3)
     elseif self.dir == "r" then
         love.graphics.drawq(self.sprite,
             self.quads[math.floor(self.fps*love.timer.getTime()%#self.quads)+1],
-            self.xPos-camX-12,
-            self.yPos-camY-12,
+            self.xPos-12,
+            self.yPos-12,
             0,
             world.scale,
             world.scale)
-        -- love.graphics.draw(self.sprite,
-        --     math.floor(self.xPos-camX)-12-(math.floor(self.fps*love.timer.getTime()%spriteNum)*24),
-        --     math.floor(self.yPos)-12, 0, 3, 3)
     end
-
-    -- love.graphics.setColor(r, g, b, a)
-    -- love.graphics.setScissor()
+    love.graphics.pop()
 end
 
 function Actor:update(dt)

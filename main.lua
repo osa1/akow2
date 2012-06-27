@@ -112,11 +112,15 @@ function between(a, min, max)
 end
 
 function love.mousepressed(x, y, button)
-    editor:mousepressed(x, y, button)
+    if gameState == "editor" then
+        editor:mousepressed(x, y, button)
+    end
 end
 
 function love.mousereleased(x, y, button)
-    editor:mousereleased(x, y, button)
+    if gameState == "editor" then
+        editor:mousereleased(x, y, button)
+    end
 end
 
 function love.keypressed(key, unicode)
