@@ -3,7 +3,7 @@ Swarm = {}
 function Swarm:new()
     object = {}
 
-    object.enteties = {}
+    object.entities = {}
 
     setmetatable(object, self)
     self.__index = self
@@ -16,13 +16,13 @@ function Swarm:init()
         for y = 0, 19 do
             red, green, blue, alpha = world.baseImg:getPixel(x, y)
             if red == 0 and green == 0 and blue == 255 then
-                self.enteties[i] = Actor:new(x*8*3+12, y*8*3+10)
-                self.enteties[i].type = "bug"
-                self.enteties[i].ai = true
-                self.enteties[i].maxSpeed = 15
-                self.enteties[i].sprite = love.graphics.newImage("gfx/enbug.png")
-                self.enteties[i].sprite:setFilter("nearest", "nearest")
-                self.enteties[i].fps = 6 + math.random(1, 3)
+                self.entities[i] = Actor:new(x*8*3+12, y*8*3+10)
+                self.entities[i].type = "bug"
+                self.entities[i].ai = true
+                self.entities[i].maxSpeed = 15
+                self.entities[i].sprite = love.graphics.newImage("gfx/enbug.png")
+                self.entities[i].sprite:setFilter("nearest", "nearest")
+                self.entities[i].fps = 6 + math.random(1, 3)
                 i = i + 1
             end
         end
@@ -31,79 +31,79 @@ function Swarm:init()
 end
 
 function Swarm:add(x, y, xvel, yvel, objType)
-    self.enteties[#self.enteties+1] = Actor:new(x, y)
-    self.enteties[#self.enteties].xVel = xvel
-    self.enteties[#self.enteties].yVel = yvel
+    self.entities[#self.entities+1] = Actor:new(x, y)
+    self.entities[#self.entities].xVel = xvel
+    self.entities[#self.entities].yVel = yvel
 
     if objType == "bomb" then
-        self.enteties[#self.enteties].type = "bomb"
-        self.enteties[#self.enteties].hasLife = true
-        self.enteties[#self.enteties].life = 3
-        self.enteties[#self.enteties].inAir = true
-        self.enteties[#self.enteties].fps = 8 + math.random(1, 3)
-        self.enteties[#self.enteties].isBouncy = true
-        self.enteties[#self.enteties].friction = 500
-        self.enteties[#self.enteties].sprite = love.graphics.newImage("gfx/ball.png")
-        self.enteties[#self.enteties].sprite:setFilter("nearest", "nearest")
+        self.entities[#self.entities].type = "bomb"
+        self.entities[#self.entities].hasLife = true
+        self.entities[#self.entities].life = 3
+        self.entities[#self.entities].inAir = true
+        self.entities[#self.entities].fps = 8 + math.random(1, 3)
+        self.entities[#self.entities].isBouncy = true
+        self.entities[#self.entities].friction = 500
+        self.entities[#self.entities].sprite = love.graphics.newImage("gfx/ball.png")
+        self.entities[#self.entities].sprite:setFilter("nearest", "nearest")
     elseif objType == "smoke" then
-        self.enteties[#self.enteties].collides = false
-        self.enteties[#self.enteties].noWrap = true
-        self.enteties[#self.enteties].hasLife = true
-        self.enteties[#self.enteties].life = 0.1 + (math.random(1, 10)/50)
+        self.entities[#self.entities].collides = false
+        self.entities[#self.entities].noWrap = true
+        self.entities[#self.entities].hasLife = true
+        self.entities[#self.entities].life = 0.1 + (math.random(1, 10)/50)
         if(math.random(1, 6) > 1) then
-            self.enteties[#self.enteties].sprite = love.graphics.newImage("gfx/smoke.png")
+            self.entities[#self.entities].sprite = love.graphics.newImage("gfx/smoke.png")
         else
-            self.enteties[#self.enteties].sprite = love.graphics.newImage("gfx/fire.png")
+            self.entities[#self.entities].sprite = love.graphics.newImage("gfx/fire.png")
         end
-        self.enteties[#self.enteties].sprite:setFilter("nearest", "nearest")
+        self.entities[#self.entities].sprite:setFilter("nearest", "nearest")
     elseif objType == "glitter" then
-        self.enteties[#self.enteties].collides = true
-        self.enteties[#self.enteties].noWrap = true
-        self.enteties[#self.enteties].hasLife = true
-        self.enteties[#self.enteties].life = 0.1 + (math.random(1, 10)/10)
-        self.enteties[#self.enteties].friction = 100
-        self.enteties[#self.enteties].sprite = love.graphics.newImage("gfx/glitter.png")
-        self.enteties[#self.enteties].sprite:setFilter("nearest", "nearest")
+        self.entities[#self.entities].collides = true
+        self.entities[#self.entities].noWrap = true
+        self.entities[#self.entities].hasLife = true
+        self.entities[#self.entities].life = 0.1 + (math.random(1, 10)/10)
+        self.entities[#self.entities].friction = 100
+        self.entities[#self.entities].sprite = love.graphics.newImage("gfx/glitter.png")
+        self.entities[#self.entities].sprite:setFilter("nearest", "nearest")
     elseif objType == "blood" then
-        self.enteties[#self.enteties].collides = false
-        self.enteties[#self.enteties].noWrap = true
-        self.enteties[#self.enteties].hasLife = true
-        self.enteties[#self.enteties].life = 0.1 + (math.random(1, 10)/50)
-        self.enteties[#self.enteties].sprite = love.graphics.newImage("gfx/blood.png")
-        self.enteties[#self.enteties].sprite:setFilter("nearest", "nearest")
+        self.entities[#self.entities].collides = false
+        self.entities[#self.entities].noWrap = true
+        self.entities[#self.entities].hasLife = true
+        self.entities[#self.entities].life = 0.1 + (math.random(1, 10)/50)
+        self.entities[#self.entities].sprite = love.graphics.newImage("gfx/blood.png")
+        self.entities[#self.entities].sprite:setFilter("nearest", "nearest")
     end
 end
 
 function Swarm:draw()
-    for i = 1, #self.enteties do
-        if not self.enteties[i] == false then
-            self.enteties[i]:draw()
+    for i = 1, #self.entities do
+        if not self.entities[i] == false then
+            self.entities[i]:draw()
         end
     end
 end
 
 function Swarm:update(dt)
-    for i = 1, #self.enteties do
-        if not self.enteties[i] == false then
-            self.enteties[i]:update(dt)
-            if self.enteties[i].hasLife then
-                if self.enteties[i].life > 0 then
-                    self.enteties[i].life = self.enteties[i].life - dt    
+    for i = 1, #self.entities do
+        if not self.entities[i] == false then
+            self.entities[i]:update(dt)
+            if self.entities[i].hasLife then
+                if self.entities[i].life > 0 then
+                    self.entities[i].life = self.entities[i].life - dt
                 -- Kill actor
                 else
-                    if self.enteties[i].type == "bomb" then
+                    if self.entities[i].type == "bomb" then
                         -- Kill near enemys
-                        for j = 1, #self.enteties do
-                            if (not self.enteties[j] == false) then
+                        for j = 1, #self.entities do
+                            if (not self.entities[j] == false) then
                                 if not (j == i) then
                                     local radius = 30
                                     -- If object is in "radius"
-                                    if self.enteties[j].xPos > self.enteties[i].xPos-radius and self.enteties[j].xPos < self.enteties[i].xPos+radius then
-                                        if self.enteties[j].yPos > self.enteties[i].yPos-radius and self.enteties[j].yPos < self.enteties[i].yPos+radius then
-                                            if self.enteties[j].type == "bomb" and self.enteties[j].life > .3 then
-                                                self.enteties[j].life = .3
-                                            elseif self.enteties[j].type == "bug" then
-                                                self.enteties[j].hasLife = true
+                                    if self.entities[j].xPos > self.entities[i].xPos-radius and self.entities[j].xPos < self.entities[i].xPos+radius then
+                                        if self.entities[j].yPos > self.entities[i].yPos-radius and self.entities[j].yPos < self.entities[i].yPos+radius then
+                                            if self.entities[j].type == "bomb" and self.entities[j].life > .3 then
+                                                self.entities[j].life = .3
+                                            elseif self.entities[j].type == "bug" then
+                                                self.entities[j].hasLife = true
                                             end
                                         end
                                     end
@@ -113,10 +113,10 @@ function Swarm:update(dt)
                         sfx:play("boom")
                         gameScreenShake = 25
                         for z = 1, 40 do
-                            self:add(self.enteties[i].xPos, self.enteties[i].yPos, math.random(-300, 300), math.random(-300, 300), "smoke")
+                            self:add(self.entities[i].xPos, self.entities[i].yPos, math.random(-300, 300), math.random(-300, 300), "smoke")
                         end
                     end
-                    if self.enteties[i].type == "bug" then
+                    if self.entities[i].type == "bug" then
                         sfx:play("splat")
                         mobsLeftOnMap = mobsLeftOnMap - 1
                         if mobsLeftOnMap == 0 and doorExists then
@@ -125,10 +125,10 @@ function Swarm:update(dt)
                             end
                         end
                         for z = 1, 30 do
-                            self:add(self.enteties[i].xPos, self.enteties[i].yPos, math.random(-150, 150), math.random(-150, 150), "blood")
+                            self:add(self.entities[i].xPos, self.entities[i].yPos, math.random(-150, 150), math.random(-150, 150), "blood")
                         end
                     end
-                    self.enteties[i] = false
+                    self.entities[i] = false
                 end
             end
         end
@@ -137,10 +137,10 @@ end
 
 function Swarm:collidesWithBug(actor)
     local retVal = false
-    for i = 1, #self.enteties do
-        if not (self.enteties[i] == false) then
-            if self.enteties[i].type == "bug" then
-                if actor.xPos > self.enteties[i].xPos-12 and actor.xPos < self.enteties[i].xPos+12 and actor.yPos < self.enteties[i].yPos+12 and actor.yPos > self.enteties[i].yPos-6 then
+    for i = 1, #self.entities do
+        if not (self.entities[i] == false) then
+            if self.entities[i].type == "bug" then
+                if actor.xPos > self.entities[i].xPos-12 and actor.xPos < self.entities[i].xPos+12 and actor.yPos < self.entities[i].yPos+12 and actor.yPos > self.entities[i].yPos-6 then
                     retVal = true
                 end
             end
