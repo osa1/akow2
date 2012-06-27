@@ -7,11 +7,8 @@ function Editor:new(lvl)
     local object = {}
 
     local level = lvl or 1
-    -- WTF, this line doesn't work
-    -- object.world = World:new(lvl)
-    -- but this works
-    local world = World:new(level)
-    object.world = world
+
+    object.world = World:new(level)
 
     object.tilePanel = TilePanel:new(50, 50)
 
