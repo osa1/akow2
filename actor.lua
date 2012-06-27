@@ -23,8 +23,14 @@ function Actor:new(x, y)
     object.maxFall = 900
     object.inAir = true
 
+    object.quads = {}
+    for i=0,5 do
+        table.insert(object.quads, love.graphics.newQuad(8*i, 0, 8, 8, 48, 8))
+    end
+
     object.sprite = love.graphics.newImage("gfx/player.png")
     object.sprite:setFilter("nearest", "nearest")
+    object.spriteSize = object.sprite:getHeight()
 
     setmetatable(object, self)
     self.__index = self
@@ -34,19 +40,46 @@ end
 function Actor:draw()
     local r, g, b, a = love.graphics.getColor()
 
-    local spriteSize = self.sprite:getHeight()
-    local spriteNum = math.floor(self.sprite:getWidth()/spriteSize)
-    love.graphics.setColor(255, 255 ,255, 255)
-    love.graphics.setScissor(self.xPos-12, self.yPos-12, spriteSize*3, spriteSize*3)
-    if self.dir == "l" then
-        love.graphics.draw(self.sprite, math.floor(self.xPos)+12+(math.floor(self.fps*love.timer.getTime()%spriteNum)*24), math.floor(self.yPos)-12, 0, -3, 3)
-    elseif self.dir == "r" then
-        love.graphics.draw(self.sprite, math.floor(self.xPos)-12-(math.floor(self.fps*love.timer.getTime()%spriteNum)*24), math.floor(self.yPos)-12, 0, 3, 3)
-    end
-    print("x pos", math.floor(self.xPos)+12+(math.floor(self.fps*love.timer.getTime()%spriteNum)*24))
+    -- local spriteSize = self.sprite:getHeight()
+    -- local spriteNum = math.floor(self.sprite:getWidth()/spriteSize)
+    -- love.graphics.setColor(255, 255 ,255, 255)
+    -- love.graphics.setScissor(self.xPos-12, self.yPos-12, spriteSize*3, spriteSize*3)
+    -- if self.dir == "l" then
+    --     love.graphics.draw(self.sprite, math.floor(self.xPos)+12+(math.floor(self.fps*love.timer.getTime()%spriteNum)*24), math.floor(self.yPos)-12, 0, -3, 3)
+    -- elseif self.dir == "r" then
+    --     love.graphics.draw(self.sprite, math.floor(self.xPos)-12-(math.floor(self.fps*love.timer.getTime()%spriteNum)*24), math.floor(self.yPos)-12, 0, 3, 3)
+    -- end
+    -- print("x pos", math.floor(self.xPos)+12+(math.floor(self.fps*love.timer.getTime()%spriteNum)*24))
 
-    love.graphics.setColor(r, g, b, a)
-    love.graphics.setScissor()
+    local camX = math.floor(cam.x/8/world.scale)
+    local camY = math.floor(cam.y/8/world.scale)
+
+    if self.dir == "l" then
+        love.graphics.drawq(self.sprite,
+            self.quads[math.floor(self.fps*love.timer.getTime()%#self.quads)+1],
+            self.xPos-camX+12,
+            self.yPos-camY-12,
+            0,
+            -world.scale,
+            world.scale)
+        -- love.graphics.draw(self.sprite,
+        --     math.floor(self.xPos-camX)+12+(math.floor(self.fps*love.timer.getTime()%spriteNum)*24),
+        --     math.floor(self.yPos)-12, 0, -3, 3)
+    elseif self.dir == "r" then
+        love.graphics.drawq(self.sprite,
+            self.quads[math.floor(self.fps*love.timer.getTime()%#self.quads)+1],
+            self.xPos-camX-12,
+            self.yPos-camY-12,
+            0,
+            world.scale,
+            world.scale)
+        -- love.graphics.draw(self.sprite,
+        --     math.floor(self.xPos-camX)-12-(math.floor(self.fps*love.timer.getTime()%spriteNum)*24),
+        --     math.floor(self.yPos)-12, 0, 3, 3)
+    end
+
+    -- love.graphics.setColor(r, g, b, a)
+    -- love.graphics.setScissor()
 end
 
 function Actor:update(dt)
