@@ -27,11 +27,8 @@ function Editor:update(dt)
 end
 
 function Editor:draw()
-    love.graphics.push()
-    love.graphics.translate(-cam.x, -cam.y)
     self.world:draw()
     -- cam:draw()
-    love.graphics.pop()
     self.tilePanel:draw()
 end
 
@@ -51,7 +48,6 @@ function Editor:mousepressed(x, y, button)
             end
         end
     end
-    print("selected tile", selectedTile)
 end
 
 function Editor:mousereleased(x, y, button)

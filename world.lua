@@ -24,6 +24,8 @@ function World:new(lvl)
 end
 
 function World:draw()
+    love.graphics.push()
+    love.graphics.translate(-cam.x, -cam.y)
     -- local r, g, b, a = love.graphics.getColor()
 
     -- love.graphics.setColor(255, 255, 255, 255)
@@ -70,6 +72,7 @@ function World:draw()
     end
 
     -- love.graphics.setColor(r, g, b, a)
+    love.graphics.pop()
 end
 
 function World:update(dt)

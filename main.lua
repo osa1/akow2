@@ -2,6 +2,7 @@ require("editor")
 require("cam")
 require("world")
 require("actor")
+require("sfxengine")
 
 function love.load()
     love.graphics.setMode(768, 480, false, false, 0)
@@ -12,16 +13,17 @@ function love.load()
     gameState = "editor"
     editor = Editor:new()
 
+    sfx = SfxEngine:new()
+    sfx:play("music")
+
+    clickCooldown = 0
+
     font1 = love.graphics.newFont("fonts/pf_tempesta_seven_extended.ttf", 12)
     fontSmall = love.graphics.newFont("fonts/pf_tempesta_seven_extended.ttf", 9)
     player = Actor:new(0, 0)
     editor.world:positionPlayer()
 
-    --char = { x=0, y=0 }
-
-    --cam = Cam:new(300, 200, 768, 480)
-    cam = Cam:new(768, 480, 1440, 480)
-    --cam:lock(char)
+    cam = Cam:new(768, 480)
 
     Tile:new("normal", Tile.gfxNormal, { r=255, g=0, b=0 })
     Tile:new("top",    Tile.gfxTop,    { r=0, g=255, b=0 })
@@ -74,9 +76,34 @@ function love.update(dt)
 
         editor:update(dt)
     elseif gameState == "game" then
-        cam:lock(player)
         cam:update(dt)
+
+        world:update(dt)
+
+        local speedAdd = 3000
+        if player.inAir then speedAdd = speedAdd / 1.7 end
+        if (love.keyboard.isDown("a") or love.keyboard.isDown("left")) and player.xVel > -player.maxSpeed then
+            player.xVel = player.xVel - (speedAdd * dt)
+            player.dir = "l"
+        elseif (love.keyboard.isDown("d") or love.keyboard.isDown("right")) and player.xVel < player.maxSpeed then
+            player.xVel = player.xVel + (speedAdd * dt)
+            player.dir = "r"
+        end
+        if player.xVel < -player.maxSpeed then player.xVel = -player.maxSpeed end
+        if player.xVel > player.maxSpeed then player.xVel = player.maxSpeed end
+
         player:update(dt)
+        -- swarm:update(dt)
+        clickCooldown = clickCooldown - dt
+
+        if mobsLeftOnMap == 0 then
+            if player.xPos > world.doorXPos and player.xPos < world.doorXPos+24 and player.yPos > world.doorYPos and player.yPos < world.doorYPos+24 and doorExists then
+                gameLevel = gameLevel + 1
+                gameInit = true
+                sfx:play("success")
+            end
+        end
+
     end
 end
 
@@ -93,7 +120,7 @@ function love.mousereleased(x, y, button)
 end
 
 function love.keypressed(key, unicode)
-    print("key pressed: ", unicode)
+    -- print("key pressed: ", unicode)
     if unicode == 20 then -- ctrl + t
         editor.world.overImgToggle = not editor.world.overImgToggle
     -- elseif unicode == 18 then -- ctrl + r
@@ -102,8 +129,27 @@ function love.keypressed(key, unicode)
     elseif unicode == 5 then -- ctrl + e
         if gameState == "editor" then
             gameState = "game"
+            cam:lock(player)
         elseif gameState == "game" then
             gameState = "editor"
+            cam:lock(nil)
         end
+    end
+
+    if gameState == "game" and not player.inAir then
+        if key == " " or key == "up" then
+            sfx:play("jump")
+            player.yVel = -375
+            player.inAir = true
+        end
+    end
+    if key == "r" and gameLevel > 0 then
+        gameInit = true
+        sfx:play("fail")
+    end
+    if key == "escape" and gameLevel > 0 then
+        gameLevel = 0
+        gameInit = true
+        sfx:play("fail")
     end
 end

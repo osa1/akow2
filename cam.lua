@@ -1,11 +1,9 @@
 Cam = {}
 
-function Cam:new(width, height, mapWidth, mapHeight)
+function Cam:new(width, height)
     object = {}
     object.width = width
     object.height = height
-    object.mapWidth = mapWidth
-    object.mapHeight = mapHeight
     object.lockedId = nil
     -- top left corner
     object.x = 0
@@ -24,16 +22,16 @@ end
 
 function Cam:update(dt)
     if self.lockedId then
-        if self.lockedId.xPos + self.width/2 > self.mapWidth then
-            self.x = self.mapWidth - self.width
+        if self.lockedId.xPos + self.width > world.width*world.scale*8 then
+            self.x = world.width*world.scale*8 - self.width
         elseif self.lockedId.xPos - self.width/2 < 0 then
             self.x = 0
         else
             self.x = self.lockedId.xPos - self.width/2
         end
 
-        if self.lockedId.yPos + self.height/2 > self.mapHeight then
-            self.y = self.mapHeight - self.height
+        if self.lockedId.yPos + self.height/2 > world.height*world.scale*8 then
+            self.y = world.height*world.scale*8 - self.height
         elseif self.lockedId.yPos - self.height/2 < 0 then
             self.y = 0
         else

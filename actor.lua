@@ -32,7 +32,7 @@ function Actor:new(x, y)
 end
 
 function Actor:draw()
-    r, g, b, a = love.graphics.getColor()
+    local r, g, b, a = love.graphics.getColor()
 
     local spriteSize = self.sprite:getHeight()
     local spriteNum = math.floor(self.sprite:getWidth()/spriteSize)
@@ -43,6 +43,7 @@ function Actor:draw()
     elseif self.dir == "r" then
         love.graphics.draw(self.sprite, math.floor(self.xPos)-12-(math.floor(self.fps*love.timer.getTime()%spriteNum)*24), math.floor(self.yPos)-12, 0, 3, 3)
     end
+    print("x pos", math.floor(self.xPos)+12+(math.floor(self.fps*love.timer.getTime()%spriteNum)*24))
 
     love.graphics.setColor(r, g, b, a)
     love.graphics.setScissor()
@@ -99,12 +100,12 @@ function Actor:update(dt)
     end
 
     -- Wrapping
-    if not self.noWrap then
-        if self.xPos > love.graphics.getWidth()-12 then self.xPos = self.xPos - love.graphics.getWidth()+24 end
-        if self.xPos < 13 then self.xPos = self.xPos + love.graphics.getWidth()-24 end
-        if self.yPos > love.graphics.getHeight()-12 then self.yPos = self.yPos - love.graphics.getHeight()+24 end
-        if self.yPos < 13 then self.yPos = self.yPos + love.graphics.getHeight()-24 end
-    end
+    -- if not self.noWrap then
+    --     if self.xPos > love.graphics.getWidth()-12 then self.xPos = self.xPos - love.graphics.getWidth()+24 end
+    --     if self.xPos < 13 then self.xPos = self.xPos + love.graphics.getWidth()-24 end
+    --     if self.yPos > love.graphics.getHeight()-12 then self.yPos = self.yPos - love.graphics.getHeight()+24 end
+    --     if self.yPos < 13 then self.yPos = self.yPos + love.graphics.getHeight()-24 end
+    -- end
 
     -- Collision
     if self.collides then
