@@ -48,6 +48,7 @@ end
 function love.draw()
     if gameState == "editor" then
         editor:draw()
+        player:draw()
     elseif gameState == "game" then
         editor.world:draw()
         player:draw()
@@ -115,6 +116,8 @@ function love.mousepressed(x, y, button)
     if gameState == "editor" then
         editor:mousepressed(x, y, button)
     end
+
+    -- button == "m" -- middle button
 end
 
 function love.mousereleased(x, y, button)
