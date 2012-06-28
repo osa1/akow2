@@ -23,6 +23,9 @@ function Actor:new(x, y)
     object.maxFall = 900
     object.inAir = true
 
+    object.height = 8
+    object.width = 8
+
     object.quads = {}
     for i=0,5 do
         table.insert(object.quads, love.graphics.newQuad(8*i, 0, 8, 8, 48, 8))
@@ -39,26 +42,26 @@ end
 
 function Actor:draw()
     love.graphics.push()
-    love.graphics.translate(-cam.x, -cam.y)
+    love.graphics.translate(-math.floor(cam.x), -math.floor(cam.y))
 
-    -- print("actor x", self.xPos, "actor y", self.yPos)
-    -- print("cam center x", cam.x + cam.width/2, "cam center y", cam.y + cam.height/2)
+    print("actor x", self.xPos, "actor y", self.yPos)
+    print("cam center x", cam.x + cam.width/2, "cam center y", cam.y + cam.height/2)
 
     local r, g, b, a = love.graphics.getColor()
 
     if self.dir == "l" then
         love.graphics.drawq(self.sprite,
             self.quads[math.floor(self.fps*love.timer.getTime()%#self.quads)+1],
-            self.xPos+12,
-            self.yPos-12,
+            self.xPos+(self.width/2)*world.scale,
+            self.yPos-(self.height/2)*world.scale,
             0,
             -world.scale,
             world.scale)
     elseif self.dir == "r" then
         love.graphics.drawq(self.sprite,
             self.quads[math.floor(self.fps*love.timer.getTime()%#self.quads)+1],
-            self.xPos-12,
-            self.yPos-12,
+            self.xPos-(self.width/2)*world.scale,
+            self.yPos-(self.height/2)*world.scale,
             0,
             world.scale,
             world.scale)
@@ -71,14 +74,18 @@ function Actor:update(dt)
     if self.ai then
         if self.dir == "r" then
             self.xVel = self.maxSpeed
-            if world:checkCollide(self.xPos+8, self.yPos+24+8) and not world:checkCollide(self.xPos+8, self.yPos) then
+            -- if world:checkCollide(self.xPos+8, self.yPos+24+8) and not world:checkCollide(self.xPos+8, self.yPos) then
+            if world:checkCollide(self.xPos+self.width, self.yPos+self.height*world.scale+self.height)
+                    and not world:checkCollide(self.xPos+self.width, self.yPos) then
                 self.xPos = self.xPos + self.xVel*dt
             else
                 self.dir = "l"
             end
         else
             self.xVel = -self.maxSpeed
-            if world:checkCollide(self.xPos-8, self.yPos+24+8) and not world:checkCollide(self.xPos-8, self.yPos) then
+            -- if world:checkCollide(self.xPos-8, self.yPos+24+8) and not world:checkCollide(self.xPos-8, self.yPos) then
+            if world:checkCollide(self.xPos-self.width, self.yPos+self.height*world.scale+self.height)
+                    and not world:checkCollide(self.xPos-self.width, self.yPos) then
                 self.xPos = self.xPos + self.xVel*dt
             else
                 self.dir = "r"
@@ -125,9 +132,47 @@ function Actor:update(dt)
     -- end
 
     -- Collision
+
+    -- if self.collides then
+    --     for i = -8, 8 do
+    --         if world:checkCollide(xPos+i, self.yPos+12) then
+    --             self.yPos = yPos
+    --             self.inAir = false
+    --             if self.isBouncy then
+    --                 self.yVel = (self.yVel * -1) * 0.5
+    --             else
+    --                 self.yVel = 0
+    --             end
+    --         end
+    --     end
+
+    --     for i = -8, 8 do
+    --         if world:checkCollide(xPos+i, self.yPos-8) then
+    --             self.yPos = yPos
+    --             if self.isBouncy then
+    --                 self.yVel = (self.yVel * -1) * 0.5
+    --             else
+    --                 self.yVel = 0
+    --             end
+    --         end
+    --     end
+
+    --     for i = -8, 12 do
+    --         if world:checkCollide(self.xPos+8, yPos+i) or world:checkCollide(self.xPos-8, yPos+i) then
+    --             self.xPos = xPos
+    --             if self.isBouncy then
+    --                 self.xVel = self.xVel * -1
+    --             else
+    --                 self.xVel = 0
+    --             end
+    --         end
+    --     end
+    -- end
+
+
     if self.collides then
-        for i = -8, 8 do
-            if world:checkCollide(xPos+i, self.yPos+12) then
+        for i = -self.width, self.width do
+            if world:checkCollide(xPos+i, self.yPos+(1.5*self.height)) then
                 self.yPos = yPos
                 self.inAir = false
                 if self.isBouncy then
@@ -138,8 +183,8 @@ function Actor:update(dt)
             end
         end
 
-        for i = -8, 8 do
-            if world:checkCollide(xPos+i, self.yPos-8) then
+        for i = -self.width, self.width do
+            if world:checkCollide(xPos+i, self.yPos-self.height) then
                 self.yPos = yPos
                 if self.isBouncy then
                     self.yVel = (self.yVel * -1) * 0.5
@@ -149,8 +194,9 @@ function Actor:update(dt)
             end
         end
 
-        for i = -8, 12 do
-            if world:checkCollide(self.xPos+8, yPos+i) or world:checkCollide(self.xPos-8, yPos+i) then
+        for i = -self.height, 1.5*self.height do
+            if world:checkCollide(self.xPos+self.width, yPos+i) or
+                    world:checkCollide(self.xPos-self.width, yPos+i) then
                 self.xPos = xPos
                 if self.isBouncy then
                     self.xVel = self.xVel * -1
