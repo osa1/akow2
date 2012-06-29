@@ -143,12 +143,15 @@ function love.keypressed(key, unicode)
         end
     end
 
-    if gameState == "game" and not player.inAir then
+    if gameState == "game" then
         if key == " " or key == "up" then
-            sfx:play("jump")
-            player.yVel = -375
-            player.inAir = true
+            player:jump()
         end
+        -- if key == " " or key == "up" then
+        --     sfx:play("jump")
+        --     player.yVel = -375
+        --     player.inAir = true
+        -- end
     end
     if key == "r" and gameLevel > 0 then
         gameInit = true
