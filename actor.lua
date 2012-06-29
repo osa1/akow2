@@ -44,9 +44,6 @@ function Actor:draw()
     love.graphics.push()
     love.graphics.translate(-math.floor(cam.x), -math.floor(cam.y))
 
-    print("actor x", self.xPos, "actor y", self.yPos)
-    print("cam center x", cam.x + cam.width/2, "cam center y", cam.y + cam.height/2)
-
     local r, g, b, a = love.graphics.getColor()
 
     if self.dir == "l" then
@@ -70,11 +67,17 @@ function Actor:draw()
 end
 
 function Actor:update(dt)
+    print("dt", dt)
+    if dt >= 0.01 then
+        self:update(0.009)
+        self:update(dt-0.009)
+        return
+    end
+
     -- AI movement
     if self.ai then
         if self.dir == "r" then
             self.xVel = self.maxSpeed
-            -- if world:checkCollide(self.xPos+8, self.yPos+24+8) and not world:checkCollide(self.xPos+8, self.yPos) then
             if world:checkCollide(self.xPos+self.width, self.yPos+self.height*world.scale+self.height)
                     and not world:checkCollide(self.xPos+self.width, self.yPos) then
                 self.xPos = self.xPos + self.xVel*dt
@@ -83,7 +86,6 @@ function Actor:update(dt)
             end
         else
             self.xVel = -self.maxSpeed
-            -- if world:checkCollide(self.xPos-8, self.yPos+24+8) and not world:checkCollide(self.xPos-8, self.yPos) then
             if world:checkCollide(self.xPos-self.width, self.yPos+self.height*world.scale+self.height)
                     and not world:checkCollide(self.xPos-self.width, self.yPos) then
                 self.xPos = self.xPos + self.xVel*dt
@@ -98,6 +100,7 @@ function Actor:update(dt)
     local yPos = self.yPos
 
     self.yPos = self.yPos + (self.yVel * dt)
+
     self.yVel = self.yVel + (1150 * dt)
     if self.yVel > self.maxFall then self.yVel = self.maxFall end
     if math.abs(self.yVel) < 2 then
@@ -205,5 +208,13 @@ function Actor:update(dt)
                 end
             end
         end
+    end
+end
+
+function Actor:jump()
+    if not self.inAir then
+        sfx:play("jump")
+        self.yVel = -375
+        self.inAir = true
     end
 end
