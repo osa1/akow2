@@ -121,7 +121,7 @@ function love.update(dt)
 end
 
 function love.keypressed(key, unicode)
-	if gameScreen == "game" and not player.inAir then
+	if gameScreen == "game" then
 		if key == " " or key == "up" then
 			sfx:play("jump")
 			player.yVel = -375
