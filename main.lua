@@ -43,6 +43,8 @@ function love.load()
     table.insert(tiles, tiles.door)
     table.insert(tiles, tiles.back) -- 7
     table.insert(tiles, tiles.player)
+
+    love.filesystem.setIdentity(love.filesystem.getWorkingDirectory())
 end
 
 function love.draw()
@@ -57,8 +59,6 @@ end
 
 function love.update(dt)
     if gameState == "editor" then
-        cam:update(dt)
-
         if love.keyboard.isDown("left") then
             --char.x = char.x - 500*dt
             cam.x = cam.x - 500*dt
@@ -76,9 +76,9 @@ function love.update(dt)
         end
 
         editor:update(dt)
-    elseif gameState == "game" then
-        cam:update(dt)
 
+        cam:update(dt)
+    elseif gameState == "game" then
         world:update(dt)
 
         local speedAdd = 3000
@@ -105,6 +105,7 @@ function love.update(dt)
             end
         end
 
+        cam:update(dt)
     end
 end
 
@@ -127,39 +128,33 @@ function love.mousereleased(x, y, button)
 end
 
 function love.keypressed(key, unicode)
-    -- print("key pressed: ", unicode)
-    if unicode == 20 then -- ctrl + t
-        editor.world.overImgToggle = not editor.world.overImgToggle
-    -- elseif unicode == 18 then -- ctrl + r
-        -- text:show()
-
-    elseif unicode == 5 then -- ctrl + e
-        if gameState == "editor" then
+    if gameState == "editor" then
+        if unicode == 5 then -- ctrl + e
             gameState = "game"
             cam:lock(player)
-        elseif gameState == "game" then
+        elseif unicode == 19 then -- ctrl + s
+            editor:saveBaseImgData("blaah")
+        end
+    elseif gameState == "game" then
+        if unicode == 5 then -- ctrl + e
             gameState = "editor"
             cam:lock(nil)
+        elseif key == " " or key == "up" then
+            player:jump()
         end
     end
 
-    if gameState == "game" then
-        if key == " " or key == "up" then
-            player:jump()
-        end
-        -- if key == " " or key == "up" then
-        --     sfx:play("jump")
-        --     player.yVel = -375
-        --     player.inAir = true
-        -- end
+    if unicode == 20 then -- ctrl + t
+        editor.world.overImgToggle = not editor.world.overImgToggle
     end
-    if key == "r" and gameLevel > 0 then
-        gameInit = true
-        sfx:play("fail")
-    end
-    if key == "escape" and gameLevel > 0 then
-        gameLevel = 0
-        gameInit = true
-        sfx:play("fail")
-    end
+
+    -- if key == "r" and gameLevel > 0 then
+    --     gameInit = true
+    --     sfx:play("fail")
+    -- end
+    -- if key == "escape" and gameLevel > 0 then
+    --     gameLevel = 0
+    --     gameInit = true
+    --     sfx:play("fail")
+    -- end
 end
