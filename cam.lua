@@ -21,7 +21,6 @@ function Cam:lock(entity)
 end
 
 function Cam:update(dt)
-    -- print("cam center x", self.x + self.width/2, "cam center y", self.y + self.height/2)
     if self.lockedId then
         if self.lockedId.xPos + self.width/2 > world.width*world.scale*8 then
             self.x = world.width*world.scale*8 - self.width
