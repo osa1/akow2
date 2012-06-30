@@ -28,7 +28,15 @@ end
 
 function Editor:draw()
     self.world:draw()
-    -- cam:draw()
+
+    local mouseX = love.mouse.getX()
+    local mouseY = love.mouse.getY()
+    local sx, sy = world:getTilePos(mouseX, mouseY)
+    local r, g, b, c = love.graphics.getColor()
+    love.graphics.setColor(255, 255, 255, 40)
+    love.graphics.rectangle("fill", sx, sy, 8*world.scale, 8*world.scale)
+    love.graphics.setColor(r, g, b, a)
+
     self.tilePanel:draw()
 end
 

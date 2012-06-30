@@ -42,25 +42,25 @@ function World:draw()
             else
                 red, green, blue, alpha = self.baseImg:getPixel(x, y)
                 if red == 255 and green == 0 and blue == 0 then
-                    love.graphics.draw(Tile.gfxNormal, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxNormal, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
                 elseif red == 0 and green == 255 and blue == 0 then
-                    love.graphics.draw(Tile.gfxTop, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxTop, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
                 elseif red == 255 and green == 255 and blue == 0 then
-                    love.graphics.draw(Tile.gfxUnder, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxUnder, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
                 elseif red == 0 and green == 255 and blue == 255 then
-                    love.graphics.draw(Tile.gfxStrand, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxStrand, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
                 elseif red > 120 and red < 135 and green == 0 and blue > 120 and blue < 135 then
-                    love.graphics.draw(Tile.gfxPillar, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxPillar, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
                 elseif red == 255 and green == 255 and blue == 255 then
-                    love.graphics.draw(Tile.gfxDoor, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxDoor, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
                 elseif red == 255 and green == 0 and blue == 255 then
                     if gameState == "editor" then
-                        love.graphics.draw(Tile.player, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                        love.graphics.draw(Tile.player, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
                     else
-                        love.graphics.draw(Tile.gfxBack, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                        love.graphics.draw(Tile.gfxBack, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
                     end
                 else
-                    love.graphics.draw(Tile.gfxBack, x*8*self.scale, y*8*self.scale, 0, 3, 3)
+                    love.graphics.draw(Tile.gfxBack, x*8*self.scale, y*8*self.scale, 0, self.scale, self.scale)
                 end
             end
         end
@@ -91,9 +91,18 @@ function World:positionPlayer()
     end
 end
 
+function World:getTilePos(xVal, yVal)
+    local x = math.floor((xVal+cam.x)/self.scale/8)
+    local y = math.floor((yVal+cam.y)/self.scale/8)
+
+    -- print("tilestart", x*self.scale*8-cam.x, y*self.scale*8-cam.y)
+    return x*self.scale*8-cam.x, y*self.scale*8-cam.y
+end
+
 function World:checkCollide(xVal, yVal)
-    local x = math.floor(xVal/3/8)
-    local y = math.floor(yVal/3/8)
+    -- TODO: remove 8
+    local x = math.floor(xVal/self.scale/8)
+    local y = math.floor(yVal/self.scale/8)
 
     if x < self.baseImg:getWidth() and y < self.baseImg:getHeight() and x >= 0 and y >= 0 then
         red, green, blue, alpha = self.baseImg:getPixel(x, y)
