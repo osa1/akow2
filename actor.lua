@@ -68,11 +68,16 @@ end
 
 function Actor:update(dt)
     print("dt", dt)
-    if dt >= 0.01 then
-        self:update(0.009)
-        self:update(dt-0.009)
+    if dt >= 0.008 then
+        self:update(0.007)
+        self:update(dt-0.007)
         return
     end
+    -- if dt >= 0.01 then
+    --     self:update(0.009)
+    --     self:update(dt-0.009)
+    --     return
+    -- end
 
     -- AI movement
     if self.ai then
