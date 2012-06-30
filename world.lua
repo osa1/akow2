@@ -7,7 +7,8 @@ function World:new(lvl)
 
     object.scale = 3
     -- object.baseImg = love.image.newImageData("levels/lvl"..level.."col.png")
-    object.baseImg = love.image.newImageData("levels/lvl0bigcol.png")
+    -- object.baseImg = love.image.newImageData("levels/lvl0bigcol.png")
+    object.baseImg = love.image.newImageData("levels/lvl0long.png")
     object.overImg = love.graphics.newImage("levels/lvl"..level.."over.png")
     object.overImg:setFilter("nearest", "nearest")
     object.overImgToggle = false

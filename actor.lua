@@ -39,6 +39,11 @@ function Actor:new(x, y)
     object.sprite:setFilter("nearest", "nearest")
     object.spriteSize = object.sprite:getHeight()
 
+    object.leftWallSprite = love.graphics.newImage("gfx/playerleftwall.png")
+    object.leftWallSprite:setFilter("nearest", "nearest")
+    object.rightWallSprite = love.graphics.newImage("gfx/playerrightwall.png")
+    object.rightWallSprite:setFilter("nearest", "nearest")
+
     setmetatable(object, self)
     self.__index = self
     return object
@@ -50,17 +55,32 @@ function Actor:draw()
 
     local r, g, b, a = love.graphics.getColor()
 
-    if self.dir == "l" then
-        love.graphics.drawq(self.sprite,
-            self.quads[math.floor(self.fps*love.timer.getTime()%#self.quads)+1],
-            self.xPos+(self.width/2)*world.scale,
-            self.yPos-(self.height/2)*world.scale,
-            0,
-            -world.scale,
-            world.scale)
-    elseif self.dir == "r" then
-        love.graphics.drawq(self.sprite,
-            self.quads[math.floor(self.fps*love.timer.getTime()%#self.quads)+1],
+    if not self.wallPos then
+        if self.dir == "l" then
+            love.graphics.drawq(self.sprite,
+                self.quads[math.floor(self.fps*love.timer.getTime()%#self.quads)+1],
+                self.xPos+(self.width/2)*world.scale,
+                self.yPos-(self.height/2)*world.scale,
+                0,
+                -world.scale,
+                world.scale)
+        elseif self.dir == "r" then
+            love.graphics.drawq(self.sprite,
+                self.quads[math.floor(self.fps*love.timer.getTime()%#self.quads)+1],
+                self.xPos-(self.width/2)*world.scale,
+                self.yPos-(self.height/2)*world.scale,
+                0,
+                world.scale,
+                world.scale)
+        end
+    else
+        local sprite
+        if self.wallPos == "l" then
+            sprite = self.leftWallSprite
+        else
+            sprite = self.rightWallSprite
+        end
+        love.graphics.draw(sprite,
             self.xPos-(self.width/2)*world.scale,
             self.yPos-(self.height/2)*world.scale,
             0,
@@ -240,6 +260,7 @@ function Actor:update(dt)
             -- lol, I liked this setting, shuold record a vid while this is on
             -- self.yVel = -self.maxFall
             self.yVel = -self.maxFall/2
+            sfx:play("jump")
             if self.wallPos == "l" then
                 print("right")
                 self.xVel = self.maxSpeed
